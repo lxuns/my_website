@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <div style="border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 20px;">
+        <h3 style="color: gray;">{{ post.category }}</h3>
+        <h1>{{ post.title }}</h1>
+        <div style="border-bottom: 1px solid #ddd; padding: 10px 0;">
+            <span>{{ post.author }}</span> |
+            <span>조회수: {{ post.views }}</span> |
+            <span>작성일: {{ post.date_created.strftime('%Y.%m.%d %H:%M') }}</span>
+        </div>
+    </div>
+
+    <p style="margin-bottom: 30px;">{{ post.content }}</p>
+
+    <!-- 추천/비추천 UI -->
+    <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+        <!-- 추천 버튼 -->
+        <form action="{{ url_for('upvote', post_id=post.id) }}" method="POST">
+            <button type="submit" style="border: 2px solid blue; background: white; padding: 5px 10px; border-radius: 10px; font-size: 14px;">
+                😊 포텐
+            </button>
+        </form>
+
+        <!-- 추천/비추천 점수 -->
+        {% set vote_score = post.upvotes - post.downvotes %}
+        <div style="
+            margin: 0 15px; 
+            font-size: 18px; 
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 10px;
+            {% if vote_score > 0 %}
+                color: blue;
+                border: 2px solid blue;
+            {% elif vote_score < 0 %}
+                color: red;
+                border: 2px solid red;
+            {% else %}
+                color: gray;
+                border: 2px solid gray;
+            {% endif %}
+        ">
+            {{ vote_score }}
+        </div>
+
+        <!-- 비추천 버튼 -->
+        <form action="{{ url_for('downvote', post_id=post.id) }}" method="POST">
+            <button type="submit" style="border: 2px solid red; background: white; padding: 5px 10px; border-radius: 10px; font-size: 14px;">
+                😡 방출
+            </button>
+        </form>
+    </div>
+
+    <br>
+    <a href="{{ url_for('posts', category=post.category) }}">목록으로 돌아가기</a>
+{% endblock %}

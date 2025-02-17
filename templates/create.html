@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}글쓰기{% endblock %}
+
+{% block content %}
+    <h2>게시글 작성</h2>
+
+    <form action="{{ url_for('create', category=selected_category) }}" method="POST">
+        <label for="title">제목:</label>
+        <input type="text" name="title" required>
+
+        <label for="content">내용:</label>
+        <textarea name="content" required></textarea>
+
+        <!-- ✅ 카테고리 선택 (수정: 기본값을 현재 카테고리로 설정) -->
+        <label for="category">카테고리 선택:</label>
+        <select name="category">
+            <option value="공지사항" {% if selected_category == "공지사항" %}selected{% endif %}>공지사항</option>
+            <option value="잡담" {% if selected_category == "잡담" %}selected{% endif %}>잡담</option>
+            <option value="질문" {% if selected_category == "질문" %}selected{% endif %}>질문</option>
+            <option value="기타" {% if selected_category == "기타" %}selected{% endif %}>기타</option>
+        </select>
+
+        <button type="submit">작성 완료</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('posts', category=selected_category) }}">목록으로 돌아가기</a>
+{% endblock %}

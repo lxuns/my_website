@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}게시글 수정{% endblock %}
+
+{% block content %}
+    <h1>게시글 수정</h1>
+    <form method="POST">
+        <input type="text" name="title" value="{{ post.title }}" required><br>
+        
+        <label for="category">카테고리 선택:</label>
+        <select name="category" id="category">
+            <option value="공지사항" {% if post.category == "공지사항" %}selected{% endif %}>공지사항</option>
+            <option value="잡담" {% if post.category == "잡담" %}selected{% endif %}>잡담</option>
+            <option value="질문" {% if post.category == "질문" %}selected{% endif %}>질문</option>
+            <option value="기타" {% if post.category == "기타" %}selected{% endif %}>기타</option>
+        </select><br>
+        
+        <textarea name="content" required>{{ post.content }}</textarea><br>
+        <button type="submit">수정 완료</button>
+    </form>
+    <a href="{{ url_for('post_detail', post_id=post.id) }}"><button>취소</button></a>
+{% endblock %}

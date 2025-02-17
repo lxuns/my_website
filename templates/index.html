@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}게시글 목록{% endblock %}
+
+{% block content %}
+    <h1>{{ category }} 게시글</h1>
+    
+    {% if posts %}
+        {% for post in posts %}
+            <h3><a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a></h3>
+            <p>작성자: {{ post.author }}</p>
+        {% endfor %}
+    {% else %}
+        <p>이 카테고리에 게시글이 없습니다.</p>
+    {% endif %}
+{% endblock %}

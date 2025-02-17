@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}커뮤니티{% endblock %}</title>
+    <style>
+        /* 전체 페이지 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 네비게이션 바 스타일 */
+        .navbar {
+            background-color: #3366CC;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* ✅ 전체 요소를 좌측 정렬 */
+        }
+
+        /* 로고 스타일 */
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            margin-right: 40px; /* ✅ 로고와 카테고리 사이 간격 조정 */
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        /* 네비게이션 메뉴 (카테고리) */
+        .navbar .categories {
+            display: flex;
+            justify-content: flex-start; /* ✅ 카테고리 좌측 정렬 */
+            gap: 30px; /* ✅ 카테고리 간격을 적절히 조정 */
+        }
+
+        .navbar .categories a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .navbar .categories a:hover {
+            text-decoration: underline;
+        }
+
+        /* 로그인 폼 스타일 (우측 정렬) */
+        .navbar .login-form {
+            margin-left: auto; /* ✅ 로그인 폼을 우측 끝으로 밀어줌 */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar .login-form input {
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .navbar .login-form button {
+            background-color: #ffcc00;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .navbar .login-form button:hover {
+            background-color: #e6b800;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 네비게이션 바 -->
+    <div class="navbar">
+        <!-- 홈 버튼 (로고) -->
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="홈">
+            </a>
+        </div>
+
+        <!-- 카테고리 메뉴 -->
+        <div class="categories">
+            <a href="{{ url_for('posts', category='공지사항') }}">공지사항</a>
+            <a href="{{ url_for('posts', category='잡담') }}">잡담</a>
+            <a href="{{ url_for('posts', category='질문') }}">질문</a>
+            <a href="{{ url_for('posts', category='기타') }}">기타</a>
+        </div>
+
+        <!-- 로그인 폼 -->
+        <div class="login-form">
+            {% if current_user.is_authenticated %}
+                <span>{{ current_user.username }}님</span>
+                <a href="{{ url_for('logout') }}"><button>로그아웃</button></a>
+            {% else %}
+                <form method="POST" action="{{ url_for('login') }}">
+                    <input type="text" name="username" placeholder="아이디">
+                    <input type="password" name="password" placeholder="비밀번호">
+                    <button type="submit">로그인</button>
+                </form>
+                <a href="{{ url_for('register') }}"><button>회원가입</button></a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
